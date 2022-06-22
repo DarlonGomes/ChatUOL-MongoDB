@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "mongodb": "^4.7.0"
+  },
+  "name": "projeto12-batepapo-uol-api",
+  "version": "1.0.0",
+  "main": "back-bate-papo-uol/server.js",
+  "type": "module",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node back-bate-papo-uol/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "nodemonConfig": {
+    "ext": "js,coffee,json,env",
+    "watch": ".env"
+    } ,
+  "description": ""
+}
