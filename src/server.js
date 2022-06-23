@@ -1,8 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import client from '../src/setup/database.js'
-import { login } from '../src/api/participants-config.js'
+import { login , onlineUsers } from '../src/api/participants-config.js'
 
 dotenv.config();
 
@@ -12,7 +11,8 @@ server.use(express.json());
 
 
 
-server.post("/participants", (req, res) => login(req, res))
+server.post("/participants", (req, res) => login(req, res));
+server.get("/participants", (req, res) => onlineUsers(req, res));
 
 server.get("/", (req, res) =>{
     res.send(`Olá, estou funcionando na rota ${process.env.PORT}`)

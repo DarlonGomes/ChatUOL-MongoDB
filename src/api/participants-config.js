@@ -14,7 +14,7 @@ export const login = async (req, res) => {
    
     
     await client.connect();
-    const db = client.db('uol')
+    const db = client.db('uol');
 
     const alreadyActive= await db.collection('activeUsers').findOne({name: user.name});
 
@@ -40,5 +40,12 @@ export const login = async (req, res) => {
     }
 }
 
+export const onlineUsers = async (req ,res) => {
+    await client.connect();
+    const db = client.db('uol');
 
+    const participants = await db.collection('activeUsers').find().toArray();
+    console.log(participants);
 
+    res.send(participants).status(200);
+}
