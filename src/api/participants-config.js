@@ -1,8 +1,9 @@
 
 import dayjs from "dayjs";
-import { Db } from "mongodb";
+import client from "../setup/database";
 
-
+await client.connect();
+let db = client.db('uol')
 
 export const login = async (req, res) => {
     const user = req.body;
