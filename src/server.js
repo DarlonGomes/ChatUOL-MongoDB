@@ -10,9 +10,6 @@ const server = express();
 server.use(cors());
 server.use(express.json());
 
-let db = null;
-const promise = client.connect();
-      promise.then(() => db = client.db("uol"));
 
 
 server.post("/participants", (req, res) => login(req, res))
