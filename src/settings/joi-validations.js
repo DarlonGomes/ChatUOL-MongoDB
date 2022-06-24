@@ -4,7 +4,7 @@ export const messageSchema = joi.object({
     to: joi.string().min(1).trim().required(),
     text: joi.string().min(1).trim().required(),
     type: joi.string().valid('private_message','message').trim().required(),
-    from: joi.string().valid().trim().required(),
+    from: joi.string().trim().required(),
     time: joi.string().min(1).trim().required()
 })
 
