@@ -23,7 +23,7 @@ export const login = async (req, res) => {
                 to: 'Todos',
                 text: 'entra na sala...',
                 type: 'status',
-                time: dayjs().format('HH:MM:SS')
+                time: dayjs().format('HH:mm:ss')
             }
     
             await db.collection('activeUsers').insertOne(user);
@@ -48,3 +48,46 @@ export const onlineUsers = async (_,res) => {
 
     res.send(participants).status(200);
 }
+
+export const checkStatus = async (req, res) => {
+    const user = req.headers.user;
+
+    await client.connect();
+    const db = client.db('uol');
+
+    const isUserActive = await db.collection('activeUsers').findOne({name: user});
+    
+    if(isUserActive){
+        await db.collection('activerUsers').updateOne({ name: user}, {$set: { lastStatus: Date.now() }});
+        res.sendStatus(200);
+    }
+
+    res.sendStatus(404);
+}
+
+const userTimeout = async () => {
+    let messages = [];
+
+    await client.connect();
+    const db = client.db('uol');
+
+    const timeout = await db.collection('activeUsers').find({lastStatus: {$lt : Date.now() - 100000}}).toArray();
+    
+    await db.collection('activeUsers').deleteMany({lastStatus: {$lt : Date.now() - 100000}});
+
+    for(let i = 0; i < timeout.length; i++){
+        messages.push({
+            from: timeout[i].name,
+            to: 'Todos',
+            text: 'sai da sala...',
+            type: 'status',
+            time: dayjs().format('HH:mm:ss')
+        })
+    }
+
+    if(messages.length > 0){
+        await db.collection('messages').insertMany(messages)
+    }
+}
+
+setInterval(userTimeout, 15000)

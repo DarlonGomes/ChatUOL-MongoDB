@@ -10,7 +10,7 @@ export const sendMessage = async (req,res) => {
     const isUserActive = await db.collection('activeUsers').findOne({name: req.headers.user});
 
     if(isUserActive){
-        const message = {...req.body, from: req.headers.user, time: dayjs().format('HH:MM:SS') };
+        const message = {...req.body, from: req.headers.user, time: dayjs().format('HH:mm:ss') };
 
         const validation = messageSchema.validate(message, {abortEarly: true});
         if(validation.error){return res.sendStatus(422)}
