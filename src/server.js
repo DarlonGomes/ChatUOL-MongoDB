@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { login , onlineUsers } from '../src/api/participants-config.js'
+import { sendMessage, getMessage } from '../src/api/messages-config.js'
 
 dotenv.config();
 
@@ -13,7 +14,8 @@ server.use(express.json());
 
 server.post("/participants", (req, res) => login(req, res));
 server.get("/participants", (req, res) => onlineUsers(req, res));
-
+server.post("/messages", (req,res) => sendMessage(req,res));
+server.get("/messages", (req, res) => getMessage(req, res))
 server.get("/", (req, res) =>{
     res.send(`Olá, estou funcionando na rota ${process.env.PORT}`)
 })

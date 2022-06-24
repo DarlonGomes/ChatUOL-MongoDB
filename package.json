@@ -23,5 +23,8 @@
     "ext": "js,coffee,json,env",
     "watch": ".env"
   },
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^2.0.18"
+  }
 }
