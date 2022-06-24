@@ -4,19 +4,25 @@ import { messageSchema } from "../settings/joi-validations.js";
 
 export const sendMessage = async (req,res) => {
 
-    const message = {...req.body, from: req.headers.user, time: dayjs().format('HH:MM:SS') }
-    
     await client.connect();
     const db = client.db('uol');
 
-    const validation = messageSchema.validate(message, {abortEarly: true});
-    if(validation.error){return res.sendStatus(422)}
-    try {
-        await db.collection('messages').insertOne(message);
-        return res.sendStatus(201);
-    } catch (error) {
-        return res.send(error).status(500);
+    const isUserActive = await db.collection('activeUsers').findOne({name: req.headers.user});
+
+    if(isUserActive){
+        const message = {...req.body, from: req.headers.user, time: dayjs().format('HH:MM:SS') };
+
+        const validation = messageSchema.validate(message, {abortEarly: true});
+        if(validation.error){return res.sendStatus(422)}
+        try {
+            await db.collection('messages').insertOne(message);
+            return res.sendStatus(201);
+        } catch (error) {
+            return res.send(error).status(500);
+        }
     }
+
+    return res.sendStatus(403);
 }
 
 export const getMessage = async (req,res) => {
