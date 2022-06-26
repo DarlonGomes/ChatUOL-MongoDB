@@ -34,7 +34,7 @@ export const getMessage = async (req,res) => {
     
     if(isUserActive){
         try {
-            const messages = await db.collection('messages').find({$or: [{to: user}, {to: "Todos"}]}).toArray();
+            const messages = await db.collection('messages').find({$or: [{to: user}, {to: "Todos"}, {from: user}]}).toArray();
             return res.send(messages.slice(-limit)).status(200);
         } catch (error) {
             return res.send(error).status(500);

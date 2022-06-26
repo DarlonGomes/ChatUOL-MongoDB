@@ -37,16 +37,20 @@ export const login = async (req, res) => {
    
     return res.sendStatus(409);
     
-}
+} 
 
 export const onlineUsers = async (_,res) => {
     await client.connect();
-    const db = client.db('uol');
-
-    const participants = await db.collection('activeUsers').find().toArray();
+    server.post("/participants", (req, res) => login(req, res));
+    server.get("/participants", (req, res) => onlineUsers(req, res));
+    server.post("/messages", (req,res) => sendMessage(req,res));
+    server.get("/messages", (req, res) => getMessage(req, res));
+    server.post("/status", (req,res) => checkStatus(req, res))
+    server.get("/", (req, res) =>{
+        res.send(`Olá, estou funcionando na rota ${process.env.PORT}`)
     console.log(participants);
 
-    res.send(participants).status(200);
+   return res.send(participants).status(200);
 }
 
 export const checkStatus = async (req, res) => {
@@ -59,12 +63,19 @@ export const checkStatus = async (req, res) => {
     
     if(isUserActive){
         await db.collection('activerUsers').updateOne({ name: user}, {$set: { lastStatus: Date.now() }});
-        res.sendStatus(200);
+       return res.sendStatus(200);
     }
 
-    res.sendStatus(404);
+    return res.sendStatus(404);
 }
 
+server.post("/participants", (req, res) => login(req, res));
+server.get("/participants", (req, res) => onlineUsers(req, res));
+server.post("/messages", (req,res) => sendMessage(req,res));
+server.get("/messages", (req, res) => getMessage(req, res));
+server.post("/status", (req,res) => checkStatus(req, res))
+server.get("/", (req, res) =>{
+    res.send(`Olá, estou funcionando na rota ${process.env.PORT}`)
 const userTimeout = async () => {
     let messages = [];
 
