@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import client from "../setup/database.js";
 import { messageSchema } from "../settings/joi-validations.js";
+import { ObjectId } from "mongodb";
 
 export const sendMessage = async (req,res) => {
 
@@ -42,4 +43,29 @@ export const getMessage = async (req,res) => {
     }
     
     return res.sendStatus(403);
+}
+
+export const deleteMessage = async (req,res) => {
+    const user = req.headers.user;
+    const id = new ObjectId(req.params.id);
+    
+    await client.connect();
+    const db = client.db('uol');
+
+    const idExist = await db.collection('messages').findOne({ _id: id });
+
+    if(idExist){
+        const sender = idExist.from
+        if(sender === user){
+            await db.collection('messages').deleteOne({ _id: id});
+            return res.sendStatus(200)
+        }
+        return res.sendStatus(401)
+    }
+
+return res.sendStatus(404)
+}
+
+export const editMessage = async (req,res) => {
+    //precisa finalizar
 }
