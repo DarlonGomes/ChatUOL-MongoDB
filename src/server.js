@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { login , onlineUsers , checkStatus} from '../src/api/participants-config.js'
-import { sendMessage, getMessage, deleteMessage, editMessage } from '../src/api/messages-config.js'
+import { sendMessage, getMessage, deleteMessage } from '../src/api/messages-config.js'
 
 dotenv.config();
 
@@ -18,7 +18,7 @@ server.post("/messages", (req,res) => sendMessage(req,res));
 server.get("/messages", (req, res) => getMessage(req, res));
 server.post("/status", (req,res) => checkStatus(req, res));
 server.delete("/messages/:id", (req, res) => deleteMessage(req, res));
-server.put("messages/:id", (req, res) => editMessage(req, res));
+
 
 
 

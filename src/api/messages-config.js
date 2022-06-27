@@ -66,6 +66,3 @@ export const deleteMessage = async (req,res) => {
 return res.sendStatus(404)
 }
 
-export const editMessage = async (req,res) => {
-    //precisa finalizar
-}
